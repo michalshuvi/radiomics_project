@@ -9,7 +9,7 @@ from torch.nn import init
 
 
 def tensors_as_images(tensors, nrows=1, figsize=(8, 8), titles=[],
-                      wspace=0.1, hspace=0.2, cmap=None):
+                      wspace=0.1, hspace=0.2, cmap=None, norm=True):
     """
     Plots a sequence of pytorch tensors as images.
 
@@ -38,8 +38,9 @@ def tensors_as_images(tensors, nrows=1, figsize=(8, 8), titles=[],
         image = image.squeeze()  # remove singleton dimensions if any exist
 
         # Scale to range 0..1
-        min, max = np.min(image), np.max(image)
-        image = (image-min) / (max-min)
+        if norm:
+            min, max = np.min(image), np.max(image)
+            image = (image-min) / (max-min)
 
         ax.imshow(image, cmap=cmap)
 
